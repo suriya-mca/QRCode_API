@@ -12,11 +12,11 @@ templates = Jinja2Templates(directory="templates")
 
 # QR code generator function
 @router.post("/api/qr")
-def qr_generator(request: Request, info: Data):
+async def qr_generator(request: Request, info: Data) -> HTMLResponse:
 
-    data = info.url
+    data: str = info.url
 
-    code = pyqrcode.create(data)
-    qr_data = code.png_as_base64_str(scale=5)
+    code: bytes = pyqrcode.create(data) # convert data to QR(byte)
+    qr_data: str = code.png_as_base64_str(scale=5) # convert byte code data to base64 string
 
     return templates.TemplateResponse("home.html", {"request": request, "qr_data": qr_data})
