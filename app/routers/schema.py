@@ -9,6 +9,14 @@ class WifiData(BaseModel):
     wifi_name: str
     wifi_password: str
 
+# resume data to qr parameter schema
+class ResumeData(BaseModel):
+    name: str
+    email: str
+    mobile: str
+    linkedin_link: str
+    github_link: str
+    portfolio_website: str
 
 
 

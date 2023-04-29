@@ -3,7 +3,7 @@ from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 import segno
 from segno import helpers
-from .schema import UrlData, WifiData
+from .schema import UrlData, WifiData, ResumeData
 
 # router instance
 router = APIRouter()
@@ -32,3 +32,9 @@ async def wifi_to_qr_generator(request: Request, info: WifiData) -> HTMLResponse
     # convert data to QR(byte)
     qr_data: bytes = helpers.make_wifi(ssid=name, password=password, security='WPA')
     return templates.TemplateResponse("home.html", {"request": request, "qr_data": qr_data})
+
+
+# Resume to OR code generator function
+@router.post("/api/resume_to_qr")
+async def resume_to_qr_generator(request: Request, info: ResumeData) -> HTMLResponse:
+    pass
