@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routers import QRCodeGenerator 
+from routers import qr_code_generator 
 
 from fastapi.responses import UJSONResponse
 
@@ -22,4 +22,4 @@ app.add_middleware(
 )
 
 # register router
-app.include_router(QRCodeGenerator.router)
+app.include_router(qr_code_generator.router)

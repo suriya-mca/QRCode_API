@@ -15,7 +15,8 @@
                 <div class="column is-one-quarter">
                     <!-- qr code -->
                     {% if qr_data %}
-                    <img src="data:image/png;base64,{{qr_data}}" alt="qr code for url" class="animate__animated animate__zoomIn">
+                    <img src="{{ qr_data.png_data_uri(scale=5) }}" alt="qr code for url" class="animate__animated animate__zoomIn">
+                    <!-- <img src="data:image/png;base64,{{qr_data}}" alt="qr code for url" class="animate__animated animate__zoomIn"> -->
                     <a class="button is-primary" href="data:image/png;base64,{{qr_data}}" download="QRCode">Download</a>
                     {% else %}
                     <p>Sorry!</p>
