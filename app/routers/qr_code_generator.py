@@ -37,4 +37,5 @@ async def wifi_to_qr_generator(request: Request, info: WifiData) -> HTMLResponse
 # Resume to OR code generator function
 @router.post("/api/resume_to_qr")
 async def resume_to_qr_generator(request: Request, info: ResumeData) -> HTMLResponse:
-    pass
+    
+    return info
