@@ -4,7 +4,7 @@ from fastapi.templating import Jinja2Templates
 import segno
 import json
 from segno import helpers
-from .schema import UrlData, WifiData, ResumeData, CustomEncoder, ContactDetail
+from .schema import UrlData, WifiData, CustomEncoder, ContactDetail, GeoLocation
 
 # router instance
 router = APIRouter()
@@ -36,33 +36,6 @@ async def wifi_to_qr_generator(request: Request, info: WifiData) -> HTMLResponse
     return templates.TemplateResponse("home.html", {"request": request, "qr_data": qr_data})
 
 
-# Resume to OR code generator function
-@router.post("/api/resume_to_qr")
-async def resume_to_qr_generator(request: Request, info: ResumeData) -> HTMLResponse:
-
-    data: dict = {
-        "name": info.name,
-        "email": info.email,
-        "mobile": info.mobile,
-        "country": info.country,
-        "state": info.state,
-        "city": info.city,
-        "pincode": info.pincode,
-        "social_links": {
-            "linkedin_link": info.social_links.linkedin_link,
-            "github_link": info.social_links.github_link,
-            "portfolio_website": info.social_links.portfolio_website
-        },
-        "experience": info.experience,
-        "education": info.education,
-        "certification": info.certification
-    }
-
-    # convert data to QR(byte)
-    qr_data: bytes = segno.make(json.dumps(data, cls=CustomEncoder).encode("utf-8"), error='H')
-    return templates.TemplateResponse("home.html", {"request": request, "qr_data": qr_data})
-
-
 # Contact details to QR code generator function
 @router.post("/api/contact_to_qr")
 async def contact_to_qr_generator(request: Request, info: ContactDetail) -> HTMLResponse:
@@ -78,6 +51,17 @@ async def contact_to_qr_generator(request: Request, info: ContactDetail) -> HTML
         url = info.url
     )
 
+    # convert data to QR(byte)
     qr_data: bytes = segno.make(data, error = 'H')
     return templates.TemplateResponse("home.html", {"request": request, "qr_data": qr_data})
 
+
+# Geographic location to QR code generator function
+@router.post("/api/geo_to_qr")
+async def geo_to_qr_generator(request: Request, info: GeoLocation) -> HTMLResponse:
+    
+    data: bytes = helpers.make_geo_data(info.latitude, info.longitude)
+
+    # convert data to QR(byte)
+    qr_data: bytes = segno.make(data, error = 'H')
+    return templates.TemplateResponse("home.html", {"request": request, "qr_data": qr_data})
