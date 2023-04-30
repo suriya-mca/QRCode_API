@@ -4,7 +4,7 @@ from fastapi.templating import Jinja2Templates
 import segno
 import json
 from segno import helpers
-from .schema import UrlData, WifiData, ResumeData, CustomEncoder
+from .schema import UrlData, WifiData, ResumeData, CustomEncoder, ContactDetail
 
 # router instance
 router = APIRouter()
@@ -16,10 +16,10 @@ templates = Jinja2Templates(directory="templates")
 @router.post("/api/url_to_qr")
 async def url_to_qr_generator(request: Request, info: UrlData) -> HTMLResponse:
 
-    data: str = info.url
+    data: HttpUrl = info.url
 
     # convert data to QR(byte)
-    qr_data: bytes = segno.make_qr(data) 
+    qr_data: bytes = segno.make_qr(data, error = 'H') 
     return templates.TemplateResponse("home.html", {"request": request, "qr_data": qr_data})
 
 
@@ -31,7 +31,8 @@ async def wifi_to_qr_generator(request: Request, info: WifiData) -> HTMLResponse
     password: str = info.wifi_password
 
     # convert data to QR(byte)
-    qr_data: bytes = helpers.make_wifi(ssid=name, password=password, security='WPA')
+    data: bytes = helpers.make_wifi_data(ssid=name, password=password, security='WPA')
+    qr_data: bytes = segno.make(data, error = 'H')
     return templates.TemplateResponse("home.html", {"request": request, "qr_data": qr_data})
 
 
@@ -60,3 +61,23 @@ async def resume_to_qr_generator(request: Request, info: ResumeData) -> HTMLResp
     # convert data to QR(byte)
     qr_data: bytes = segno.make(json.dumps(data, cls=CustomEncoder).encode("utf-8"), error='H')
     return templates.TemplateResponse("home.html", {"request": request, "qr_data": qr_data})
+
+
+# Contact details to QR code generator function
+@router.post("/api/contact_to_qr")
+async def contact_to_qr_generator(request: Request, info: ContactDetail) -> HTMLResponse:
+    
+    data: bytes = helpers.make_vcard_data(
+        displayname = info.name,
+        name = info.name,
+        email = info.email,
+        phone = info.phone,
+        city = info.city,
+        org = info.org,
+        title = info.title,
+        url = info.url
+    )
+
+    qr_data: bytes = segno.make(data, error = 'H')
+    return templates.TemplateResponse("home.html", {"request": request, "qr_data": qr_data})
+

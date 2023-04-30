@@ -5,7 +5,7 @@ from json import JSONEncoder
 
 # url to qr parameter schema
 class UrlData(BaseModel):
-    url: str
+    url: HttpUrl
 
 # wifi data to qr parameter schema
 class WifiData(BaseModel):
@@ -14,8 +14,8 @@ class WifiData(BaseModel):
 
 # social links
 class SocialLinks(BaseModel):
-    linkedin_link: HttpUrl = None
-    github_link: HttpUrl = None
+    linkedin: HttpUrl = None
+    github: HttpUrl = None
     portfolio_website: HttpUrl = None
 
 # work experience
@@ -65,6 +65,16 @@ class ResumeData(BaseModel):
 class CustomEncoder(json.JSONEncoder):
     def default(self, o):
             return o.__dict__
+
+# contact details to qr parameter schema
+class ContactDetail(BaseModel):
+    name: str
+    email: str
+    phone: str = None
+    city: str
+    org: str = None
+    title: str = None
+    url: HttpUrl = None
 
 
 
