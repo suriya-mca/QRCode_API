@@ -2,8 +2,9 @@ from fastapi import APIRouter, HTTPException, Request
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 import segno
+import json
 from segno import helpers
-from .schema import UrlData, WifiData, ResumeData
+from .schema import UrlData, WifiData, ResumeData, CustomEncoder
 
 # router instance
 router = APIRouter()
@@ -37,5 +38,25 @@ async def wifi_to_qr_generator(request: Request, info: WifiData) -> HTMLResponse
 # Resume to OR code generator function
 @router.post("/api/resume_to_qr")
 async def resume_to_qr_generator(request: Request, info: ResumeData) -> HTMLResponse:
-    
-    return info
+
+    data: dict = {
+        "name": info.name,
+        "email": info.email,
+        "mobile": info.mobile,
+        "country": info.country,
+        "state": info.state,
+        "city": info.city,
+        "pincode": info.pincode,
+        "social_links": {
+            "linkedin_link": info.social_links.linkedin_link,
+            "github_link": info.social_links.github_link,
+            "portfolio_website": info.social_links.portfolio_website
+        },
+        "experience": info.experience,
+        "education": info.education,
+        "certification": info.certification
+    }
+
+    # convert data to QR(byte)
+    qr_data: bytes = segno.make(json.dumps(data, cls=CustomEncoder).encode("utf-8"), error='H')
+    return templates.TemplateResponse("home.html", {"request": request, "qr_data": qr_data})
