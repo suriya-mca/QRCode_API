@@ -32,6 +32,14 @@ class GeoLocation(BaseModel):
     latitude: float
     longitude: float
 
+# emial to qr parameter schema
+class Email(BaseModel):
+    to: str
+    subject: str
+    body: str
+    cc: str = None
+
+
 # code: bytes = pyqrcode.create(data) # convert data to QR(byte)
 # qr_data: str = code.png_as_base64_str(scale=5) # convert byte code data to base64 string
 # data: str = helpers.make_mecard_data(info)

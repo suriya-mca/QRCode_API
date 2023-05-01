@@ -4,7 +4,7 @@ from fastapi.templating import Jinja2Templates
 import segno
 import json
 from segno import helpers
-from .schema import UrlData, WifiData, CustomEncoder, ContactDetail, GeoLocation
+from .schema import UrlData, WifiData, CustomEncoder, ContactDetail, GeoLocation, Email
 
 # router instance
 router = APIRouter()
@@ -40,6 +40,7 @@ async def wifi_to_qr_generator(request: Request, info: WifiData) -> HTMLResponse
 @router.post("/api/contact_to_qr")
 async def contact_to_qr_generator(request: Request, info: ContactDetail) -> HTMLResponse:
     
+    # convert data to QR(byte)
     data: bytes = helpers.make_vcard_data(
         displayname = info.name,
         name = info.name,
@@ -51,7 +52,6 @@ async def contact_to_qr_generator(request: Request, info: ContactDetail) -> HTML
         url = info.url
     )
 
-    # convert data to QR(byte)
     qr_data: bytes = segno.make(data, error = 'H')
     return templates.TemplateResponse("home.html", {"request": request, "qr_data": qr_data})
 
@@ -60,8 +60,21 @@ async def contact_to_qr_generator(request: Request, info: ContactDetail) -> HTML
 @router.post("/api/geo_to_qr")
 async def geo_to_qr_generator(request: Request, info: GeoLocation) -> HTMLResponse:
     
-    data: bytes = helpers.make_geo_data(info.latitude, info.longitude)
-
     # convert data to QR(byte)
+    data: bytes = helpers.make_geo_data(info.latitude, info.longitude)
     qr_data: bytes = segno.make(data, error = 'H')
+    return templates.TemplateResponse("home.html", {"request": request, "qr_data": qr_data})
+
+
+# Email to QR QR code generator function
+@router.post("/api/email_to_qr")
+async def email_to_qr_generator(request: Request, info: Email) -> HTMLResponse:
+    
+    # convert data to QR(byte)
+    qr_data: bytes = helpers.make_email(
+        to = info.to,
+        subject = info.subject,
+        body = info.body,
+        cc = info.cc
+    )
     return templates.TemplateResponse("home.html", {"request": request, "qr_data": qr_data})
