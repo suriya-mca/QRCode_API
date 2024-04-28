@@ -16,10 +16,9 @@
                     <!-- qr code -->
                     {% if qr_data %}
                     <img src="{{ qr_data.png_data_uri(scale=5) }}" alt="qr code for url" class="animate__animated animate__zoomIn">
-                    <!-- <img src="data:image/png;base64,{{qr_data}}" alt="qr code for url" class="animate__animated animate__zoomIn"> -->
                     <a class="button is-primary" href="{{ qr_data.png_data_uri(scale=5) }}" download="QRCode">Download</a>
                     {% else %}
-                    <p>Sorry!</p>
+                    <p>Retry!</p>
                     {% endif %}
                 </div>
             </div>
@@ -27,9 +26,4 @@
     </div>
 </section>
 </body>
-<script type="text/javascript">
-
-
-
-</script>
 </html>

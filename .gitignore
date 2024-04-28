@@ -1,4 +1,4 @@
 /env
 /app/__pycache__
-/app/routers/__pycache__
-/resume_payloads
+/app/router/__pycache__
+/app/schema/__pycache__

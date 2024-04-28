@@ -1,8 +1,9 @@
 version: '3.3'
+
 services:
-  fastapi:
-    build: ./
-    container_name: "qr-api"
+  app:
+    build: .
+    container_name: qr
     ports:
       - '8000:8000'
     volumes:

@@ -1,25 +1,24 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routers import qr_code_generator 
-
+from router import qr_code_generator 
 from fastapi.responses import UJSONResponse
 
-# create fast-api instance
+
 app = FastAPI(default_response_class=UJSONResponse)
 
-# cors settings
 origins = [
     '*',
 ]
 
-# middleware settings
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["POST"],
+    allow_headers=["application/json"],
 )
 
-# register router
-app.include_router(qr_code_generator.router)
+app.include_router(
+    qr_code_generator.router,
+    prefix="/api/v1"
+)
