@@ -4,8 +4,8 @@ API to generate dynamic QR code for URL / Link, facilitating wifi authentication
 
 ## Endpoints
 
-- /api/v1/url_to_qr: Generate QR code for a URL.
-- /api/v1/wifi_to_qr: Generate QR code for WiFi credentials.
-- /api/v1/contact_to_qr: Generate QR code for contact information.
-- /api/v1/geo_to_qr: Generate QR code for geographic location.
-- /api/v1/email_to_qr: Generate QR code for an email.
+- `POST /url_to_qr`: Generate QR code for a URL.
+- `POST /wifi_to_qr`: Generate QR code for WiFi credentials.
+- `POST /contact_to_qr`: Generate QR code for contact information.
+- `POST /geo_to_qr`: Generate QR code for geographic location.
+- `POST /email_to_qr`: Generate QR code for an email.
