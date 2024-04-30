@@ -2,3 +2,5 @@
 /app/__pycache__
 /app/router/__pycache__
 /app/schema/__pycache__
+/app/service/__pycache__
+/conf/__pycache__

@@ -12,6 +12,7 @@ WORKDIR /app
 
 # Copy current directory contents into the container at /app
 COPY ./app /app
+COPY ./conf/gunicorn.conf.py /etc/gunicorn/gunicorn.conf.py
 COPY ./requirements.txt /app
 
 # Install dependencies
@@ -21,5 +22,5 @@ RUN pip install --upgrade pip && \
 # Expose ports and define startup commands based on selected framework
 EXPOSE 8000
 
-# Specify the entry point (Replace "mail" with your actual file name)
-CMD ["uvicorn", "main:app", "--host=0.0.0.0", "--reload"]
+# Specify the entry point
+CMD ["gunicorn", "main:app", "-c", "/etc/gunicorn/gunicorn.conf.py"]

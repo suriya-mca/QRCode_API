@@ -26,3 +26,6 @@ class EmailData(BaseModel):
     subject: str
     body: str
     cc: str = None
+
+class HealthCheck(BaseModel):
+    status: str = "OK"
