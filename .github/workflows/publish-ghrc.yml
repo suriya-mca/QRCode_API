@@ -14,5 +14,5 @@ jobs:
       - name: Build and push the image
         run: |
           echo "${{ secrets.GH_WFLOW_DI }}" | docker login ghcr.io -u suriya-mca --password-stdin
-          docker build . -t ghcr.io/suriya-mca/qrcode:v0.0.1
-          docker push ghcr.io/suriya-mca/qrcode:v0.0.1
+          docker build . -t ghcr.io/suriya-mca/qrcode:v0.0.2
+          docker push ghcr.io/suriya-mca/qrcode:v0.0.2
