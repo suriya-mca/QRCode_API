@@ -2,7 +2,7 @@ name: ghcr image
 
 on:
   release:
-    types: [published, edited]
+    types: [published]
     branches:
       - main
 
